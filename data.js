@@ -10022,6 +10022,5 @@ function getAnswers() {
     answers[15] = (data.filter(student => parseInt(student.Age) >= 18 && parseInt(student.Age) <= 20 && (student.Course == "1" || student.Course == "2"))).length;
     answers[16] = (data.filter(student => student.Name[0] == 'A')).length;
     answers[17] = (data.filter(student => student.City[0] == 'B')).length;
-    console.log(answers)
 
 }

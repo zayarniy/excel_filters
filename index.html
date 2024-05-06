@@ -23,13 +23,18 @@
                 <h1>Использование фильтров в Excel</h1>
                 <p>Скачайте файл с заданием. Откройте его в Excel и с помощью фильтров выполните задания</p>
                 <p>После выполнения задания сохраните страницу в формате PDF под своей фамилией и именем</p>
-                <button id="createCsvBtn">Скачать CSV файл с заданием</button>
+                <button id="createCsvBtn" onclick="createCsvFile()">Скачать CSV файл с заданием</button>
             </div>
         </div>
         <div class="row">
             <div class="col">
-                <table class="table">
+                <table class="table table-striped  align-middle ">
                     <thead>
+                        <tr>
+                            <th colspan="4">
+                                Фильтрация данных
+                            </th>
+                        </tr>
                         <tr>
                             <th>
                                 №
@@ -147,9 +152,44 @@
                             <td><button onclick="check(this)" id="17">проверить</button></td>
                         </tr>
 
+                        <thead>
+                            <th colspan="4">Сортировка данных</th>
+                        </thead>
+                        <tr>
+                            <td>18</td>
+                            <td colspan="3">
+                                Отсортируйте учащихся по возрасту
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>19</td>
+                            <td colspan="3">
+                                Отсортируйте учащихся по возрасту и университету
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>20</td>
+                            <td colspan="3">
+                                Отсортируйте учащихся по университету и возрасту. В чем разница с предыдущем заданием? В
+                                каком порядке лучше сортировать?
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>21</td>
+                            <td colspan="3">
+                                Отсортируйте учащихся по городу, университету, факультету и возрасту (именно в таком
+                                порядке)
+                            </td>
+
+                        </tr>
                     </tbody>
                 </table>
-
+                <h1>Загрузка файла</h1>
+                <form id="upload-form" enctype="multipart/form-data">
+                    <input type="file" id="file-input" name="file" accept=".xls,.xlsx" onchange="checkFileSize(this)">
+                    <button type="submit" id="upload-button" disabled>Загрузить</button>
+                    <div id="progress-bar"></div>
+                </form>
             </div>
         </div>
     </div>
