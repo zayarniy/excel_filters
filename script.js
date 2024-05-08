@@ -64,7 +64,7 @@ function load() {
     // Добавляем обработчик события на кнопку
     //const createCsvBtn = document.getElementById('createCsvBtn');
     //createCsvBtn.addEventListener('click', createCsvFile)
-    initUpload();
+    //initUpload();
     randomData();
     getAnswers();
 }
@@ -74,7 +74,7 @@ function getRandomInt(min, max) {
 }
 
 ///////////////////
-
+/*
 var maxFileSize = 1024 * 1024; // 1 МБ
 var uploadButton;
 function initUpload() {
@@ -126,3 +126,4 @@ function checkFileSize(input) {
         }
     }
 }
+*/

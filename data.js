@@ -10023,4 +10023,6 @@ function getAnswers() {
     answers[16] = (data.filter(student => student.Name[0] == 'A')).length;
     answers[17] = (data.filter(student => student.City[0] == 'B')).length;
 
+    answers[20] = (data.filter(student => student.City.indexOf('New') != -1).reduce((accumulator, student) => accumulator, parseInt(student.Age), 0)) / (data.filter(student => student.City.indexOf('New') != -1)).length;
+
 }
