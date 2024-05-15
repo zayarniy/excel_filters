@@ -1,3 +1,5 @@
+const MAX_LENGTH = 6;
+const targetPassword = 'qqwwee';
 let password = '';
 let si = null;
 
@@ -162,6 +164,7 @@ function load() {
     //randomData();
     disableAllButtons(true);
     document.getElementById('createCsvBtn').disabled = false;
+    document.addEventListener('keydown', handlePasswordInput);
 }
 
 function getRandomInt(min, max) {
@@ -254,7 +257,7 @@ function inputText(title, html, inputPlaceholder) {
     });
 }
 
-function disableAllButtons(disabled) {
+function disableAllButtons(disabled = true) {
     // Найти все кнопки на странице
     var buttons = document.querySelectorAll('button');
 
@@ -458,3 +461,28 @@ function checkFileSize(input) {
 */
 
 
+function handlePasswordInput(event) {
+    const eventKey = event.key;
+    const key = eventKey.toLowerCase();
+    // Добавляем новую букву к строке пароля
+    if (key.length == 1)
+        password += key;
+    console.log(password)
+
+    // Ограничиваем длину строки пароля до MAX_LENGTH
+    if (password.length > MAX_LENGTH) {
+        password = password.slice(1);
+    }
+
+    // Если строка пароля совпадает с целевым паролем, вызываем функцию
+    if (password === targetPassword) {
+        executeFunction();
+        password = ''; // Сбрасываем строку пароля после выполнения функции
+    }
+}
+
+function executeFunction() {
+    // Здесь можно разместить любой код, который нужно выполнить при вводе пароля
+    console.log('Пароль введен успешно!');
+    disableAllButtons(false);
+}
