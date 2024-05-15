@@ -10015,14 +10015,22 @@ function getAnswers() {
     answers[8] = (data.filter(student => parseInt(student.Age) > 18 && student.Course == "1")).length;
     answers[9] = (data.filter(student => parseInt(student.Age) >= 20 && parseInt(student.Age) <= 23 && student.Course == "3")).length;
     answers[10] = (data.filter(student => parseInt(student.Age) >= 20 && parseInt(student.Age) <= 24 && (student.Course == "4" || student.Course == "5"))).length;
-    answers[11] = (data.filter(student => parseInt(student.Age) >= 18 && parseInt(student.Age) <= 19 && student.Course == "1" && student.Faculity == "Faculty of Biology")).length;
+    answers[11] = (data.filter(student => (parseInt(student.Age) == 18 || parseInt(student.Age) == 19) && student.Course == "1" && student.Faculity == "Faculty of Biology")).length;
     answers[12] = (data.filter(student => student.University == "Eastern Illinois University" && student.Course == "5")).length;
-    answers[13] = (((data.filter(student => student.Course == "5")).reduce((accumulator, student) => accumulator + parseInt(student.Age), 0)) / (data.filter(student => student.Course == "5")).length).toFixed(2)
-    answers[14] = (((data.filter(student => student.Course == "4" && student.Faculity == "Faculty of Biology")).reduce((accumulator, student) => accumulator + parseInt(student.Age), 0)) / (data.filter(student => student.Course == "4" && student.Faculity == "Faculty of Biology")).length).toFixed(2)
-    answers[15] = (data.filter(student => parseInt(student.Age) >= 18 && parseInt(student.Age) <= 20 && (student.Course == "1" || student.Course == "2"))).length;
-    answers[16] = (data.filter(student => student.Name[0] == 'A')).length;
-    answers[17] = (data.filter(student => student.City[0] == 'B')).length;
+    answers[13] = (data.filter(student => parseInt(student.Age) >= 18 && parseInt(student.Age) <= 20 && (student.Course == "1" || student.Course == "2"))).length;
+    answers[14] = (data.filter(student => student.Name[0].toUpperCase() == 'A')).length;
 
-    answers[20] = (data.filter(student => student.City.indexOf('New') != -1).reduce((accumulator, student) => accumulator, parseInt(student.Age), 0)) / (data.filter(student => student.City.indexOf('New') != -1)).length;
+    answers[15] = (data.filter(student => student.City[0].toUpperCase() == 'B')).length;
+
+    //    answers[15] = (data.filter(student => parseInt(student.Age) >= 18 && parseInt(student.Age) <= 20 && (student.Course == "1" || student.Course == "2"))).length;
+    answers[16] = (((data.filter(student => student.Course == "5")).reduce((accumulator, student) => accumulator + parseInt(student.Age), 0)) / (data.filter(student => student.Course == "5")).length).toFixed(2)
+    answers[17] = (((data.filter(student => student.Course == '4' && parseInt(student.Age) > 18)).reduce((accumulator, student) => accumulator + parseInt(student.Age), 0)) / (data.filter(student => student.Course == '4' && parseInt(student.Age) > 18)).length).toFixed(2)
+
+    //answers[19] = (data.filter(student => student.City[0] == 'B')).length;
+    answers[18] = (((data.filter(student => student.Course == "4" && student.Faculity == "Faculty of Biology")).reduce((accumulator, student) => accumulator + parseInt(student.Age), 0)) / (data.filter(student => student.Course == "4" && student.Faculity == "Faculty of Biology")).length).toFixed(2)
+
+    answers[19] = (((data.filter(student => student.City[0].toUpperCase() == 'C')).reduce((accumulator, student) => accumulator + parseInt(student.Age), 0)) / (data.filter(student => student.City[0].toUpperCase() == 'C')).length).toFixed(2)
+    answers[20] = (((data.filter(student => student.City.indexOf('New') != -1)).reduce((accumulator, student) => accumulator + parseInt(student.Age), 0)) / (data.filter(student => student.City.indexOf('New') != -1)).length).toFixed(2)
+    //answers[20] = ((data.filter(student => student.City.indexOf('New') != -1)).reduce((accumulator, student) => accumulator, parseInt(student.Age), 0)) / (data.filter(student => student.City.indexOf('New') != -1)).length;
 
 }
