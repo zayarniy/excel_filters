@@ -18,13 +18,44 @@
 
 <body onload="load()">
     <div class="container-fluid">
+
+        <div class="row lh-1 text-center align-middle" style="color:black">
+            <table class="table text-center caption-top thead-light table-striped">
+                <tbody>
+                    <thead>
+                        <tr>
+                            <td class="infoLabel">Начало:</td>
+                            <td class="infoLabel">Продолжительность:</td>
+                            <td class="infoLabel">Попыток:</td>
+                            <td class="infoLabel">Ошибок:</td>
+                            <td class="infoLabel">Баллов:</td>
+                            <td class="infoLabel">Качество:</td>
+                        </tr>
+                    </thead>
+                    <tr class="info">
+                        <td><span id="timeStart">Нажмите "Скачать файл с заданием"</span></td>
+                        <td><span id="timeDuration">00:00:00</span></td>
+                        <td><span id="countAttempts">0</span><span class="infoLabel"> из
+                            </span><span id="attemptsAll" class="info">28</span>
+                        </td>
+                        <td><span id="errorAttempts">0</span> из
+                            <span id="errorsMax">3 допустимых</span>
+                        </td>
+                        <td><span id="scores">0</span>
+                        </td>
+                        <td><span id="percent">0</span><span class="infoLabel">%</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
         <div class="row">
             <div class="col">
                 <h1>Использование фильтров в Excel</h1>
                 <p>Скачайте файл с заданием. Откройте его в Excel и с помощью фильтров выполните задания</p>
                 <p>После выполнения задания сохраните страницу в формате PDF под своей фамилией и именем</p>
-                <button id="createCsvBtn" onclick="createCsvFile()">Скачать CSV файл с заданием</button>
+                <button id="createCsvBtn" onclick="createCsvFile()">Скачать файл с заданием</button>
             </div>
+
         </div>
         <div class="row">
             <div class="col">
@@ -177,7 +208,7 @@
                             <td><button onclick="check(this)" id="20">проверить</button></td>
                         </tr>
                         <tr>
-                            <td><button disabled>сохранить</button></td>
+                            <td><button id='buttonFinish' disabled onclick="finish() ">Сохранить</button></td>
                         </tr>
                         <thead>
                             <th colspan="4">Сортировка данных. Выполните каждое задание на отдельной копии листа</th>
