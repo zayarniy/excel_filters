@@ -7,23 +7,20 @@ let taskInfo =
 {
     testName: 'ExcelFilter',
     percents: 0,
-    scores: 0,
     timeStart: '',
     timeFinish: '',
     lastName: '',
     firstName: '',
     countAttempts: 0,
-    maxBall: 20,
+    score: 0,
+    maxScore: 20,
     errorAttempts: 0,
     maxErrors: 3,
-    ball: 0,
+    rating: 0,
     calculatePercent: function () {
-        if (this.errorAttempts <= this.maxErrors)
-            return ((this.countAttempts - this.errorAttempts) / this.maxBall * 100).toFixed(2)
-        else
-            return (((this.countAttempts - (this.errorAttempts)) / this.maxBall) * 100).toFixed(2);
+        return (((this.score - ((this.errorAttempts > this.maxErrors) ? this.errorAttempts - this.maxErrors : 0)) / this.maxScore) * 100).toFixed(2);
     },
-    calculateBall: function () {
+    calculateRating: function () {
         let ball = parseFloat(this.calculatePercent());
         if (ball >= 90) this.ball = 5;
         if (ball < 90 && ball >= 75) this.ball = 4;
@@ -38,13 +35,13 @@ function initTaskInfo() {
 
     taskInfo.testName = 'ExcelFilter'
     taskInfo.percents = 0
-    taskInfo.scores = 0
     taskInfo.timeStart = ''
+    taskInfo.score = 0;
     taskInfo.timeFinish = ''
     taskInfo.lastName = ''
     taskInfo.firstName = ''
     taskInfo.countAttempts = 0
-    taskInfo.maxBall = 20
+    taskInfo.maxScore = 20
     taskInfo.errorAttempts = 0
     taskInfo.maxErrors = 3
     taskInfo.maxCountAttempts = 28
@@ -80,11 +77,11 @@ function inputText(title, html, inputPlaceholder) {
     });
 }
 
-function infoUpdate(score = 0, errors = 0, scoreMax = 0) {
+function infoUpdate() {
     document.getElementById('errorAttempts').textContent = taskInfo.errorAttempts;
     document.getElementById('countAttempts').textContent = taskInfo.countAttempts;
-    document.getElementById('scores').textContent = taskInfo.countAttempts - taskInfo.errorAttempts;
-    document.getElementById('percent').textContent = taskInfo.calculatePercent() //calculatePercent();
+    document.getElementById('scores').textContent = taskInfo.score;
+    document.getElementById('percent').textContent = taskInfo.calculatePercent();
 
 }
 
@@ -112,9 +109,12 @@ function check(element) {
     }
     let id = parseInt(element.id);
     let answer = document.getElementById('answer' + id)
+    if (answer.value == '') return;
+    if (answer.style.backgroundColor == 'green') return;
     taskInfo.countAttempts++;
     if (answers[id] == answer.value) {
-        answer.style.backgroundColor = 'green'
+        answer.style.backgroundColor = 'green';
+        taskInfo.score++;
     }
     else {
         answer.style.backgroundColor = 'red'
@@ -162,9 +162,13 @@ function load() {
     //createCsvBtn.addEventListener('click', createCsvFile)
     //initUpload();
     //randomData();
+    initTaskInfo();
+
+    console.log(JSON.stringify(taskInfo));
     disableAllButtons(true);
     document.getElementById('createCsvBtn').disabled = false;
     document.addEventListener('keydown', handlePasswordInput);
+
 }
 
 function getRandomInt(min, max) {
@@ -308,17 +312,10 @@ function finish() {
 }
 function sendJSONToDB() {
     // формируем данные в виде объекта
-    let infoResult = {
-        lastName: lastName,
-        firstName: firstName,
-        startTime: timeStart,
-        finishTime: timeFinish,
-        ball: ball,
-        errors: getErrorTotal(),
-        scoreMaxTotal: getScoreTotal(),
-        percent: percents,
-        testName: testName
-    };
+    taskInfo.rating = taskInfo.calculateRating();
+    taskInfo.percent = taskInfo.calculatePercent();
+
+
     // отправляем данные на сервер с помощью fetch
     fetch("https://inform.xn--80ahlrjqm6azc.xn--p1ai/excel_filters/php/db_insert.php",
         {
@@ -368,7 +365,7 @@ function showResult() {
             <span>Качество:</span><span>${(taskInfo.calculatePercent())}%</span>
         </div>
         <div>
-            <span>Оценка:</span><span>${taskInfo.calculateBall()}</span>
+            <span>Оценка:</span><span>${taskInfo.calculateRating()}</span>
         </div>
         <div>
             <span>Ошибок всего:</span><span style="color: red;">${taskInfo.errorAttempts}</span>
