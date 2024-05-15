@@ -14,16 +14,16 @@ let taskInfo =
     firstName: '',
     countAttempts: 0,
     maxBall: 20,
-    permissibleError: 5,
     errorAttempts: 0,
     maxErrors: 3,
+    ball: 0,
     calculatePercent: function () {
         if (this.errorAttempts <= this.maxErrors)
             return ((this.countAttempts - this.errorAttempts) / this.maxBall * 100).toFixed(2)
         else
             return (((this.countAttempts - (this.errorAttempts)) / this.maxBall) * 100).toFixed(2);
     },
-    ball: function () {
+    calculateBall: function () {
         let ball = parseFloat(this.calculatePercent());
         if (ball >= 90) this.ball = 5;
         if (ball < 90 && ball >= 75) this.ball = 4;
@@ -292,15 +292,15 @@ function finish() {
                     lastName = name[0];
                     firstName = name[1];
                     showMessage('Внимание', 'Данные сохраняются.<br>Не закрывайте окно', "warning", false);
-                    sendJSONToDB();
-                    setTimeout(() => window.location.reload(), 5000);
+                    //sendJSONToDB();
+                    //setTimeout(() => window.location.reload(), 5000);
                 }
-                else window.location.reload();
+                //else window.location.reload();
 
             })
 
         }
-        else window.location.reload();
+        //else window.location.reload();
     });
 
 
@@ -365,10 +365,10 @@ function showResult() {
         icon: "info",
         html: `
         <div>
-            <span>Качество:</span><span>${(taskInfo.percents)}%</span>
+            <span>Качество:</span><span>${(taskInfo.calculatePercent())}%</span>
         </div>
         <div>
-            <span>Оценка:</span><span>${(taskInfo.ball())}</span>
+            <span>Оценка:</span><span>${taskInfo.calculateBall()}</span>
         </div>
         <div>
             <span>Ошибок всего:</span><span style="color: red;">${taskInfo.errorAttempts}</span>
@@ -485,4 +485,22 @@ function executeFunction() {
     // Здесь можно разместить любой код, который нужно выполнить при вводе пароля
     console.log('Пароль введен успешно!');
     disableAllButtons(false);
+}
+
+
+let isHintVisible = false;
+
+function toggleHint() {
+    const hintContent = document.querySelector('.hint-content');
+    const hintToggle = document.querySelector('.hint-toggle');
+
+    if (isHintVisible) {
+        hintContent.style.display = 'none';
+        hintToggle.textContent = 'Подсказка';
+        isHintVisible = false;
+    } else {
+        hintContent.style.display = 'block';
+        hintToggle.textContent = 'Спрятать';
+        isHintVisible = true;
+    }
 }
