@@ -228,7 +228,7 @@ function createCsvFile() {
     initTaskInfo();
     disableAllButtons(false);
 
-    console.log(answers);
+    //console.log(answers);
     document.getElementById('buttonFinish').disabled = false;
     const csvData = jsonToCsv(data);
     const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
@@ -485,6 +485,7 @@ function executeFunction() {
     // Здесь можно разместить любой код, который нужно выполнить при вводе пароля
     console.log('Пароль введен успешно!');
     disableAllButtons(false);
+    console.log(answers)
 }
 
 
