@@ -7,8 +7,8 @@ let taskInfo =
 {
     testName: 'ExcelFilter',
     percent: 0,
-    timeStart: '',
-    timeFinish: '',
+    startTime: '',
+    finishTime: '',
     lastName: '',
     firstName: '',
     countAttempts: 0,
@@ -35,9 +35,9 @@ function initTaskInfo() {
 
     taskInfo.testName = 'ExcelFilter'
     taskInfo.percent = 0
-    taskInfo.timeStart = ''
+    taskInfo.startTime = ''
     taskInfo.score = 0;
-    taskInfo.timeFinish = ''
+    taskInfo.finishTime = ''
     taskInfo.lastName = ''
     taskInfo.firstName = ''
     taskInfo.countAttempts = 0
@@ -58,7 +58,7 @@ function tick() {
 }
 
 function getDurationTime() {
-    let diffInMilliseconds = new Date() - timeStart;
+    let diffInMilliseconds = new Date() - taskInfo.startTime;
     // Преобразуем миллисекунды в часы, минуты и секунды
     let hours = String(Math.floor(diffInMilliseconds / (1000 * 60 * 60))).padStart(2, '0');
     let minutes = String(Math.floor((diffInMilliseconds % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
@@ -90,13 +90,13 @@ function infoUpdate() {
 
 
 function checkTimeStart() {
-    taskInfo.timeStart = new Date();
+    taskInfo.startTime = new Date();
     // var n = timeBegin.toLocaleTimeString();
     //document.getElementById("time_begin").innerHTML=n;
 }
 
 function checkTimeFinish() {
-    taskInfo.timeFinish = new Date();
+    taskInfo.finishTime = new Date();
     //var n = timeEnd.toLocaleTimeString();
     //document.getElementById("time_end").innerHTML=n;
 }
@@ -144,7 +144,7 @@ function tick() {
 }
 
 function getDurationTime() {
-    let diffInMilliseconds = new Date() - taskInfo.timeStart;
+    let diffInMilliseconds = new Date() - taskInfo.startTime;
     // Преобразуем миллисекунды в часы, минуты и секунды
     let hours = String(Math.floor(diffInMilliseconds / (1000 * 60 * 60))).padStart(2, '0');
     let minutes = String(Math.floor((diffInMilliseconds % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
@@ -195,7 +195,7 @@ function getRandomInt(min, max) {
 
 
 function checkTimeStart() {
-    taskInfo.timeStart = new Date();
+    taskInfo.startTime = new Date();
 
     const options = {
         day: '2-digit',
@@ -205,12 +205,12 @@ function checkTimeStart() {
         minute: '2-digit'
     };
 
-    const formattedTime = taskInfo.timeStart.toLocaleString('ru-RU', options).replace(',', '');
+    const formattedTime = taskInfo.startTime.toLocaleString('ru-RU', options).replace(',', '');
     document.getElementById("timeStart").innerHTML = formattedTime;
 }
 
 function checkTimeFinish() {
-    taskInfo.timeFinish = new Date();
+    taskInfo.finishTime = new Date();
     //var n = timeEnd.toLocaleTimeString();
     //document.getElementById("time_end").innerHTML=n;
 }
@@ -283,6 +283,8 @@ function disableAllButtonsAndInputs(disabled = true) {
     });
     inputs.forEach(function (input) {
         input.disabled = disabled;
+        input.style.textAlign = 'right';
+        input.style.width = "80px";
     });
 
 }
@@ -347,8 +349,8 @@ function sendJSONToDB() {
     taskInfo.rating = taskInfo.calculateRating();
     taskInfo.percent = taskInfo.calculatePercent();
 
-    console.log(JSON.stringify(taskInfo));
 
+    console.log(JSON.stringify(taskInfo));
     // отправляем данные на сервер с помощью fetch
     fetch("https://inform.xn--80ahlrjqm6azc.xn--p1ai/excel_filters/php/db_insert.php",
         {

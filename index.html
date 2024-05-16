@@ -52,7 +52,6 @@
             <div class="col">
                 <h1>Использование фильтров в Excel</h1>
                 <p>Скачайте файл с заданием. Откройте его в Excel и с помощью фильтров выполните задания</p>
-                <p>После выполнения задания сохраните страницу в формате PDF под своей фамилией и именем</p>
                 <button id="createCsvBtn" onclick="createCsvFile()">Скачать файл с заданием</button>
                 <button id="createCsvBtn" onclick="window.location.reload()" style="display: inline-block;"
                     disabled>Начать с
@@ -62,7 +61,7 @@
         </div>
         <div class="row">
             <div class="col">
-                <table class="table table-striped  align-middle ">
+                <table class="table table-striped  align-middle">
                     <thead>
                         <tr>
                             <th colspan="4">
@@ -250,17 +249,36 @@
                 </table>
                 Продемонстрируйте результаты сортировки преподавателю или отправьте файл с отсортированными таблицами
                 преподавателю.
-                <div class="hint-container">
+                <div class="hint-container text-center" style="font-size: small;">
                     <div class="hint-toggle" onclick="toggleHint()">Подсказка</div>
                     <div class="hint-content">
                         <h6>Подсказка</h6>
                         Допустимые ошибки не влияют на качество работы. Каждая следующая ошибка уменьшает качество
                         работы.
-                        <h6>Оценка</h6>
-                        Качество &gt= 90% - 5<br>
-                        Качество 75%..89% - 4<br>
-                        Качество 50%..74% - 3<br>
-                        Качество &lt 50% - 2<br>
+                        <div>
+                            <table class="table text-center table-striped">
+                                <thead>
+                                    <th>Качество</th>
+                                    <th>Оценка</th>
+                                </thead>
+                                <tr>
+                                    <td>&gt= 90%</td>
+                                    <td>5</td>
+                                </tr>
+                                <tr>
+                                    <td>75% .. 89%</td>
+                                    <td>4</td>
+                                </tr>
+                                <tr>
+                                    <td>50% .. 74%</td>
+                                    <td>3</td>
+                                </tr>
+                                <tr>
+                                    <td>&lt 50%</td>
+                                    <td>2</td>
+                                </tr>
+                            </table>
+                        </div>
                     </div>
                 </div>
                 <!--
