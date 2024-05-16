@@ -105,10 +105,19 @@ function checkTimeFinish() {
 function check(element) {
     if (taskInfo.countAttempts >= taskInfo.maxCountAttempts - 1) {
         alert("Попытки закончились. Обновите страницу, чтобы начать с начала");
-        disableAllButtons();
+        disableAllButtonsAndInputs();
     }
-    let id = parseInt(element.id);
-    let answer = document.getElementById('answer' + id)
+    let id;
+    let answer;
+    if (element.tagName == 'BUTTON') {
+        id = parseInt(element.id);
+        answer = document.getElementById('answer' + id)
+    }
+    if (element.tagName == 'INPUT') {
+        id = parseInt(element.id.slice(6, 10));
+        answer = element;
+    }
+
     if (answer.value == '') return;
     if (answer.style.backgroundColor == 'green') return;
     taskInfo.countAttempts++;
@@ -162,10 +171,11 @@ function load() {
     //createCsvBtn.addEventListener('click', createCsvFile)
     //initUpload();
     //randomData();
+    setEventListenerOnInput();
     initTaskInfo();
 
-    console.log(JSON.stringify(taskInfo));
-    disableAllButtons(true);
+    //console.log(JSON.stringify(taskInfo));
+    disableAllButtonsAndInputs(true);
     document.getElementById('createCsvBtn').disabled = false;
     document.addEventListener('keydown', handlePasswordInput);
 
@@ -230,7 +240,7 @@ function createCsvFile() {
     getAnswers();
     clearAllInputs();
     initTaskInfo();
-    disableAllButtons(false);
+    disableAllButtonsAndInputs(false);
 
     //console.log(answers);
     document.getElementById('buttonFinish').disabled = false;
@@ -261,13 +271,34 @@ function inputText(title, html, inputPlaceholder) {
     });
 }
 
-function disableAllButtons(disabled = true) {
+function disableAllButtonsAndInputs(disabled = true) {
     // Найти все кнопки на странице
-    var buttons = document.querySelectorAll('button');
+    let buttons = document.querySelectorAll('button');
+    let inputs = document.querySelectorAll('input');
 
     // Отключить каждую кнопку
     buttons.forEach(function (button) {
         button.disabled = disabled;
+    });
+    inputs.forEach(function (input) {
+        input.disabled = disabled;
+    });
+
+}
+
+function setEventListenerOnInput() {
+    let inputs = document.querySelectorAll('input');
+
+    // Отключить каждую кнопку
+    inputs.forEach(function (input) {
+        input.addEventListener('keydown', (event) => {
+            if (event.key == 'Enter') {
+                //console.log(document.activeElement);
+                check(document.activeElement);
+            }
+        }
+        );
+
     });
 }
 
@@ -464,7 +495,7 @@ function handlePasswordInput(event) {
     // Добавляем новую букву к строке пароля
     if (key.length == 1)
         password += key;
-    console.log(password)
+    //console.log(password)
 
     // Ограничиваем длину строки пароля до MAX_LENGTH
     if (password.length > MAX_LENGTH) {
@@ -481,7 +512,7 @@ function handlePasswordInput(event) {
 function executeFunction() {
     // Здесь можно разместить любой код, который нужно выполнить при вводе пароля
     console.log('Пароль введен успешно!');
-    disableAllButtons(false);
+    disableAllButtonsAndInputs(false);
     console.log(answers)
 }
 
