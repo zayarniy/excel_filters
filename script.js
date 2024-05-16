@@ -6,7 +6,7 @@ let si = null;
 let taskInfo =
 {
     testName: 'ExcelFilter',
-    percents: 0,
+    percent: 0,
     timeStart: '',
     timeFinish: '',
     lastName: '',
@@ -22,11 +22,11 @@ let taskInfo =
     },
     calculateRating: function () {
         let ball = parseFloat(this.calculatePercent());
-        if (ball >= 90) this.ball = 5;
-        if (ball < 90 && ball >= 75) this.ball = 4;
-        if (ball < 75 && ball >= 50) this.ball = 3;
-        if (ball < 50) this.ball = 2;
-        return this.ball;
+        if (ball >= 90) this.rating = 5;
+        if (ball < 90 && ball >= 75) this.rating = 4;
+        if (ball < 75 && ball >= 50) this.rating = 3;
+        if (ball < 50) this.rating = 2;
+        return this.rating;
     }
 
 }
@@ -34,7 +34,7 @@ let taskInfo =
 function initTaskInfo() {
 
     taskInfo.testName = 'ExcelFilter'
-    taskInfo.percents = 0
+    taskInfo.percent = 0
     taskInfo.timeStart = ''
     taskInfo.score = 0;
     taskInfo.timeFinish = ''
@@ -45,6 +45,7 @@ function initTaskInfo() {
     taskInfo.errorAttempts = 0
     taskInfo.maxErrors = 3
     taskInfo.maxCountAttempts = 28
+    taskInfo.rating = 0;
 }
 
 
@@ -174,7 +175,7 @@ function load() {
     setEventListenerOnInput();
     initTaskInfo();
 
-    //console.log(JSON.stringify(taskInfo));
+    // console.log(JSON.stringify(taskInfo));
     disableAllButtonsAndInputs(true);
     document.getElementById('createCsvBtn').disabled = false;
     document.addEventListener('keydown', handlePasswordInput);
@@ -209,7 +210,7 @@ function checkTimeStart() {
 }
 
 function checkTimeFinish() {
-    timeFinish = new Date();
+    taskInfo.timeFinish = new Date();
     //var n = timeEnd.toLocaleTimeString();
     //document.getElementById("time_end").innerHTML=n;
 }
@@ -317,17 +318,17 @@ function clearAllInputs() {
 
 
 function finish() {
-    clearInterval(si);
     checkTimeFinish();
+    clearInterval(si);
     showResult().then((result) => {
         if (result.isConfirmed) {
             inputText("Сохранение", `Введите свое <strong>фамилию</strong> и <strong>имя</strong>:`, "Иванов Иван").then((name) => {
                 if (name.isConfirmed && name.value != "") {
                     name = name.value.trim().replace(/\s+/g, " ").split(' ');
-                    lastName = name[0];
-                    firstName = name[1];
+                    taskInfo.lastName = name[0];
+                    taskInfo.firstName = name[1];
                     showMessage('Внимание', 'Данные сохраняются.<br>Не закрывайте окно', "warning", false);
-                    //sendJSONToDB();
+                    sendJSONToDB();
                     //setTimeout(() => window.location.reload(), 5000);
                 }
                 //else window.location.reload();
@@ -346,6 +347,7 @@ function sendJSONToDB() {
     taskInfo.rating = taskInfo.calculateRating();
     taskInfo.percent = taskInfo.calculatePercent();
 
+    console.log(JSON.stringify(taskInfo));
 
     // отправляем данные на сервер с помощью fetch
     fetch("https://inform.xn--80ahlrjqm6azc.xn--p1ai/excel_filters/php/db_insert.php",
@@ -354,7 +356,7 @@ function sendJSONToDB() {
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(infoResult)
+            body: JSON.stringify(taskInfo)
         }).then((response) => {
             //console.log(response)
             if (response.ok) {
