@@ -560,7 +560,7 @@ function toggleHint() {
 
     if (isHintVisible) {
         hintContent.style.display = 'none';
-        hintToggle.textContent = 'Подсказка';
+        hintToggle.textContent = 'Инструкция';
         isHintVisible = false;
     } else {
         hintContent.style.display = 'block';
