@@ -15,8 +15,10 @@ let taskInfo =
     score: 0,
     maxScore: 20,
     errorAttempts: 0,
-    maxErrors: 3,
+    maxErrors: 5,
     rating: 0,
+    currentGrade:2,
+    maxCountAttempts:30,
     calculatePercent: function () {
         return (((this.score - ((this.errorAttempts > this.maxErrors) ? this.errorAttempts - this.maxErrors : 0)) / this.maxScore) * 100).toFixed(2);
     },
@@ -31,6 +33,8 @@ let taskInfo =
 
 }
 
+
+
 function initTaskInfo() {
 
     taskInfo.testName = 'ExcelFilter'
@@ -43,10 +47,34 @@ function initTaskInfo() {
     taskInfo.countAttempts = 0
     taskInfo.maxScore = 20
     taskInfo.errorAttempts = 0
-    taskInfo.maxErrors = 3
-    taskInfo.maxCountAttempts = 28
+    taskInfo.maxErrors = 5
+    taskInfo.maxCountAttempts = 30
     taskInfo.rating = 0;
+    infoUpdate();
 }
+
+new Vue({
+    el: '#app',
+    data()//так как имя data было задействовано, используем такой трюк
+    {
+        return taskInfo;
+    },
+    computed: {
+        formatTime() {
+            return (this.recTime + "").toMMSS();
+        },
+    },
+    methods: {
+        ChangeSchoolname() {
+            if (this.studentSchoolname == 'Другое') {
+                this.isShowAnotherSchool = true;
+
+            }
+            else
+                this.isShowAnotherSchool = false;
+        }
+    }
+})
 
 
 function timerStart() {
@@ -83,6 +111,8 @@ function infoUpdate() {
     document.getElementById('countAttempts').textContent = taskInfo.countAttempts;
     document.getElementById('scores').textContent = taskInfo.score;
     document.getElementById('percent').textContent = taskInfo.calculatePercent();
+    //document.getElementById('errorsMax').textContent = taskInfo.maxErrors;
+    document.getElementById('attemptsAll').textContent = taskInfo.maxCountAttempts;
 
 }
 
@@ -130,6 +160,7 @@ function check(element) {
         answer.style.backgroundColor = 'red'
         taskInfo.errorAttempts++;
     }
+    taskInfo.currentGrade=taskInfo.calculateRating();
     infoUpdate();
 
 
@@ -329,8 +360,8 @@ function finish() {
                     name = name.value.trim().replace(/\s+/g, " ").split(' ');
                     taskInfo.lastName = name[0];
                     taskInfo.firstName = name[1];
-                    showMessage('Внимание', 'Данные сохраняются.<br>Не закрывайте окно', "warning", false);
                     sendJSONToDB();
+                    showMessage('Внимание', 'Данные успешно сохранились.<br>Спасибо за выполнение работы', "warning", false);
                     //setTimeout(() => window.location.reload(), 5000);
                 }
                 //else window.location.reload();
@@ -419,7 +450,7 @@ function showResult() {
         confirmButtonText: `
            Сохранить
         `,
-        cancelButtonText: 'Отлично!'
+        cancelButtonText: 'Пока не сохранять'
     });
 
 }

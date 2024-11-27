@@ -10,14 +10,13 @@
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>-->
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
     <script src="libs/sweetalert2@11"></script>
     <script src="data.js"></script>
-    <script src="script.js"></script>
 </head>
 
 <body onload="load()">
-    <div class="container-fluid">
+    <div class="container-fluid" id="app">
 
         <div class="row lh-1 text-center align-middle" style="color:black">
             <table class="table text-center caption-top thead-light table-striped">
@@ -26,10 +25,11 @@
                         <tr>
                             <td class="infoLabel">Начало:</td>
                             <td class="infoLabel">Продолжительность:</td>
-                            <td class="infoLabel">Попыток:</td>
+                            <td class="infoLabel">Проверок:</td>
                             <td class="infoLabel">Ошибок:</td>
                             <td class="infoLabel">Баллов:</td>
                             <td class="infoLabel">Качество:</td>
+                            <td class="infoLabel">Текущая оценка:</td>
                         </tr>
                     </thead>
                     <tr class="info">
@@ -39,20 +39,21 @@
                             </span><span id="attemptsAll" class="info">28</span>
                         </td>
                         <td><span id="errorAttempts">0</span> из
-                            <span id="errorsMax">3 допустимых</span>
+                            <span>{{maxErrors}}</span> допустимых
                         </td>
                         <td><span id="scores">0</span>
                         </td>
                         <td><span id="percent">0</span><span class="infoLabel">%</span></td>
+                        <td><span>{{currentGrade}}</span></td>
                     </tr>
                 </tbody>
             </table>
         </div>
         <div class="row">
             <div class="col">
-                <h1>Использование фильтров в Excel</h1>
-                <p>Скачайте файл с заданием. Откройте его в Excel и с помощью фильтров выполните задания</p>
-                <button id="createCsvBtn" onclick="createCsvFile()">Скачать файл с заданием</button>
+                <h2>Самостоятельная работа. <strong>Использование фильтров в Excel</strong></h2>
+                <p>Нажмите кнопку "Инструкция". Прочитайте ее. Затем скачайте файл с заданием (кнопка "Скачать задание"). Откройте его в Excel и с помощью фильтров выполните задания</p>
+                <button id="createCsvBtn" onclick="createCsvFile()">Скачать задание</button>
                 <button id="createCsvBtn" onclick="window.location.reload()" style="display: inline-block;"
                     disabled>Начать с
                     начала</button>
@@ -74,7 +75,7 @@
                             </th>
                             <th>Задание</th>
                             <th>Ответ</th>
-                            <th>Результат</th>
+                            <th>Проверка</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -196,7 +197,7 @@
 
                         <tr>
                             <td> 19 </td>
-                            <td> Подсчитайте средний возраст учащихся из городов названия которых начинаются на букву С
+                            <td> Подсчитайте средний возраст учащихся из городов названия которых начинаются на букву С  (до двух знаков после запятой)
                             </td>
                             <td><input id="answer19" type="number" /> </td>
                             <td><button onclick="check(this)" id="19">проверить</button></td>
@@ -204,13 +205,13 @@
                         <tr>
                             <td> 20 </td>
                             <td> Подсчитайте средний возраст учащихся из городов в названиях которых присутствует слово
-                                New
+                                New  (до двух знаков после запятой)
                             </td>
                             <td><input id="answer20" type="number" /> </td>
                             <td><button onclick="check(this)" id="20">проверить</button></td>
                         </tr>
                         <tr>
-                            <td><button id='buttonFinish' disabled onclick="finish() ">Оценка</button></td>
+                            <td><button id='buttonFinish' disabled onclick="finish() ">Сохранить</button></td>
                         </tr>
                         <thead>
                             <th colspan="4">Часть 2. Сортировка данных. Создайте четыре копии листа. Выполните каждое
@@ -250,11 +251,13 @@
                 Продемонстрируйте результаты сортировки преподавателю или отправьте файл с отсортированными таблицами
                 преподавателю.
                 <div class="hint-container text-center" style="font-size: small;">
-                    <div class="hint-toggle" onclick="toggleHint()">Подсказка</div>
-                    <div class="hint-content">
-                        <h6>Подсказка</h6>
-                        Допустимые ошибки не влияют на качество работы. Каждая следующая ошибка уменьшает качество
-                        работы.
+                    <div class="hint-toggle" onclick="toggleHint()">Инструкция</div>
+                    <div class="hint-content" style="text-align: justify;">
+                        <h6>Инструкция</h6>
+                        <strong>Допустимых ошибок </strong><span>{{maxErrors}}</span>. Они не влияют на качество работы.<br>Каждая следующая ошибка уменьшает качество
+                        работы.<br>
+                        Среднее значение нужно вводить через точку c округлением до 3 знака и всегда два знака после запятой, даже если там знаков меньше (например, не 5, а 5.00. Если среднее значение равно, 3,545, вводим 3.50)<br>
+                        Следите за количеством проверок. Если их станет больше максимального (<span>{{maxCountAttempts}}), то придется начинать работу с начала</span>
                         <div>
                             <table class="table text-center table-striped">
                                 <thead>
@@ -291,6 +294,8 @@
             </div>
         </div>
     </div>
+    <script src="script.js"></script>
+
 </body>
 
 </html>
